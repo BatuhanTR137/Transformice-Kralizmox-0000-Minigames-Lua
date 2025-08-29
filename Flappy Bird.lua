@@ -1,15 +1,16 @@
 -- Transformice flappy bird minigame made by Kralizmox#0000 --
 -- Made in 10 July 2024 --
--- Last update in 12 July 2024 --
+-- Last update in 7 October 2024 --
 
 tfm.exec.disableAutoShaman()
 tfm.exec.disableAutoNewGame()
 tfm.exec.disableAutoTimeLeft()
 tfm.exec.disableAfkDeath()
 tfm.exec.disablePhysicalConsumables()
+tfm.exec.disableDebugCommand()
 
 local admins = {["Kralizmox#0000"] = true}
-local playerAlive, playerScore, playerScoreText, playerScoreRecord, playerScoreTimer, highestPlayerScore, highestPlayerScoreName, playerAliveCount = {}, {}, {}, {}, 8, 0, "none", 0
+local playerAlive, playerScore, playerScoreText, playerScoreRecord, playerScoreTimer, playerDeathTimer, highestPlayerScore, highestPlayerScoreName, playerAliveCount = {}, {}, {}, {}, 8, {}, 0, "none", 0
 local gameTime, gameRoundCount = 0, 0
 local barrierSpawnTimer, barrierSpawnCount, barrierLevel, barrierColor, barrierYPosition, removeBarrierTimer = 3.5, 0, 280, "0x24D02A", 240, 10
 local groundId, groundId2 = 0, 0
@@ -20,34 +21,31 @@ tfm.exec.setGameTime(9999999)
 tfm.exec.setRoomMaxPlayers(49)
 
 function eventNewGame()
-   -- Game round counter --
-   --gameRoundCount = gameRoundCount + 1
-   --if gameRoundCount > 10 then
-      --gameRoundCount = 1
-      --for name in next, tfm.get.room.playerList do
-         --playerScore[name] = 0
-      --end
-   --end
-   tfm.exec.setAieMode(true, 0.0001, nil)
-   --ui.setMapName("Flappy Bird <font color='#6C77C1'>| </font><font color='#C2C2DA'>Round:</font><font color='#98E2EB'> " .. gameRoundCount .. "/10</font>")
-   ui.setMapName("Flappy Bird")
+   tfm.exec.setAieMode(true, 0.00001, nil)
+   ui.setMapName("Flappy Bird minigame made by <font color='#00FFFF'>Kralizmox#0000</font>")
    for name in next, tfm.get.room.playerList do
-      playerAlive[name], playerScore[name] = true, 0
+      playerAlive[name], playerScore[name], playerDeathTimer[name] = true, 0, 0.5
       playerAliveCount = playerAliveCount + 1
       system.bindKeyboard(name, 32, true, true)
       system.bindKeyboard(name, 38, true, true)
       system.bindKeyboard(name, 87, true, true)
       tfm.exec.addImage("1909dfec50b.png", "?1", 0, 0, name, 1.5, 0.908) -- Background image
       tfm.exec.addImage("1909dfee6fe.png", "%" .. name, -30, -30, nil, 0.2, 0.2) -- Player image
+      if not admins[name] then
+         tfm.exec.setNameColor(name, 0x24D02A)
+      elseif admins[name] == true then
+         tfm.exec.setNameColor(name, 0x00FFFF)
+      end
       playerScoreText[name] = 0
       ui.addTextArea(2, "<p align='center'><font size='24' color='#FFFFFF'>" .. playerScoreText[name] .. "</font></p>", name, 0, 55, 800, 50, 0x000000, 0, 1, false)
       ui.addTextArea(4, "", nil, 200, 25, 400, 10, 0x808080, 0, 1, false)
-      ui.addTextArea(6, "<font size='16' color='#FFFFFF'>Difficulty:</font>  <font size='16' color='#24D02A'>1</font><font color='#FFFFFF'>                    <font size='16' color='#FEFF00'>21</font>                    <font size='16' color='#FFA100'>41</font>                    <font size='16' color='#F20D0D'>61</font>               <font size='16' color='#731BE0'>+81</font>", nil, 110, 20, 500, 50, 0x000000, 0, 1, false)
-      ui.addTextArea(7, "<p align='center'><font size='16' color='#FFFFFF'>Highest score " .. math.floor(highestPlayerScore) .. " record by " .. highestPlayerScoreName .. "</font></p>", nil, 0, 40, 800, 40, 0x000000, 0, 1, false)
-      --ui.addTextArea(3, "<p align='center'><font size='20' color='#FFFFFF'>Highest score record " .. playerScoreRecord .. " by " .. name .. "</font></p>", nil, 0, 60, 800, 50, 0x000000, 0, 1, false)
-      --ui.addTextArea(5, "", nil, 200, 20, 10, 10, 0x1AA0E4, 0, 1, false)
-      --ui.addTextArea(6, "<font size='18' color='#FFFFFF'>| | | | | |</font>", name, 200, 10, 400, 40, 0x000000, 0, 1, false)
-      --tfm.exec.setPlayerScore(name, playerScore[name])
+      ui.addTextArea(6, "<font size='16' color='#FFFFFF'>Difficulty:</font>", nil, 110, 20, 85, 25, 0x000000, 0, 1, false)
+      ui.addTextArea(7, "<font size='16' color='#24D02A'>1</font>", nil, 200, 20, 15, 20, 0x000000, 0, 1, false)
+      ui.addTextArea(8, "<font size='16' color='#FEFF00'>21</font>", nil, 290, 20, 25, 20, 0x000000, 0, 1, false)
+      ui.addTextArea(9, "<font size='16' color='#FFA100'>41</font>", nil, 385, 20, 25, 20, 0x000000, 0, 1, false)
+      ui.addTextArea(10, "<font size='16' color='#F20D0D'>61</font>", nil, 480, 20, 25, 20, 0x000000, 0, 1, false)
+      ui.addTextArea(11, "<font size='16' color='#731BE0'>+81</font>", nil, 565, 20, 40, 20, 0x000000, 0, 1, false)
+      ui.addTextArea(12, "<p align='center'><font size='16' color='#FFFFFF'>Highest score " .. math.floor(highestPlayerScore) .. " record by " .. highestPlayerScoreName .. "</font></p>", nil, 0, 40, 800, 40, 0x000000, 0, 1, false)
       tfm.exec.setPlayerGravityScale(name, 240000)
       tfm.exec.freezePlayer(name, true, false)
    end
@@ -55,14 +53,11 @@ function eventNewGame()
 end
 
 function eventNewPlayer(name)
-   ui.setMapName("Flappy Bird")
+   ui.setMapName("Flappy Bird minigame made by <font color='#00FFFF'>Kralizmox#0000</font>")
    playerScore[name], playerScoreRecord[name] = 0, -1
    tfm.exec.setPlayerScore(name, playerScore[name])
-   tfm.exec.chatMessage("<font color='#BABD2F'>Welcome to Flappy Bird minigame, How to play: Press spacebar or w or arrow up key to fly bird.</font>\n<font color='#E68d43'>Minigame made by: Kralizmox#0000</font>", name)
-   tfm.exec.addImage("1909dfec50b.png", "?1", 0, 0, name, 1.5, 0.908) -- Background image
-   if admins[name] == true then
-      tfm.exec.setNameColor(name, 0xEB1D51)
-   end
+   tfm.exec.chatMessage("<font color='#30BA76'>Welcome to Flappy Bird minigame, How to play: Press spacebar or w or arrow up key to fly bird.</font>\n<font color='#BABD2F'>Tip: When there many players, use ./watch [player name] command to see yourself for better gameplay.</font>\n<font color='#E68d43'>Minigame made by: Kralizmox#0000</font>", name)
+   tfm.exec.addImage("1909dfec50b.png", "?1", 0, 0, name, 1.5, 0.908)
 end
 
 for name in next, tfm.get.room.playerList do
@@ -70,21 +65,11 @@ for name in next, tfm.get.room.playerList do
 end
 
 function eventKeyboard(name, key, down, x, y)
-   if key == 32 or key == 38 or key == 87 then
+   if key == 32 or key == 38 or key == 87 then -- Spacebar, Up, W key
       tfm.exec.movePlayer(name, 0, 0, false, 0, -100, false)
       tfm.exec.playSound("transformice/son/dash.mp3", 100, nil, nil, name)
+      playerDeathTimer[name] = 0.5
    end
-   if key == 76 then
-      pressedLKeyCount[name] = true
-      if pressedLKeyCount[name] == 1 then
-         tfm.exec.addImage("", "!1", 0, 0, name, 1, 1) -- Leaderboard image
-         ui.addTextArea(8, "<p align='center'><font size='16' color='#FFFFFF'></font></p>", nil, 0, 40, 800, 40, 0x000000, 0, 1, false)
-      else
-         pressedLKeyCount[name] = 0
-         removeImage[name] = tfm.exec.removeImage()
-         ui.removeTextArea(8, name)
-      end
-   end 
 end
 
 function checkDead()
@@ -117,23 +102,36 @@ function eventLoop(a, b)
       tfm.exec.setGameTime(9999999)
       playerScoreTimer, barrierSpawnTimer, barrierSpawnCount, barrierLevel, barrierColor, barrierYPosition, removeBarrierTimer = 8, 3.5, 0, 280, "0x24D02A", 240, 10
       difficultyBarWidth = 0
-   end
-   -- Add player score every 2 seconds --
+   end   
+   -- Add player score every 1 seconds --
    playerScoreTimer = playerScoreTimer - 0.5
    if playerScoreTimer == 0 then
       for name in next, tfm.get.room.playerList do
          if playerAlive[name] == true then
             playerScoreText[name] = playerScoreText[name] + 1
-            --playerScoreRecord = playerScoreRecord + 1
             tfm.exec.playSound("transformice/son/fleche.mp3", 100, nil, nil, name)
             ui.updateTextArea(2, "<p align='center'><font size='24' color='#FFFFFF'>" .. playerScoreText[name] .. "</font></p>", name)
-            --if playerScore[name] >= playerScoreRecord then
-               --ui.updateTextArea(3, "<p align='center'><font size='16' color='#FFFFFF'>Highest score record " .. playerScoreRecord .. " by " .. name .. "</font></p>", nil)
-            --end
+            if not admins[name] then
+               -- Player name colors --
+               if playerScoreText[name] == 21 then
+                  tfm.exec.setNameColor(name, 0xFFEF00)
+               elseif playerScoreText[name] == 41 then
+                  tfm.exec.setNameColor(name, 0xFFA100)
+               elseif playerScoreText[name] == 61 then
+                  tfm.exec.setNameColor(name, 0xF20D0D)
+               elseif playerScoreText[name] == 81 then
+                  tfm.exec.setNameColor(name, 0x731BE0)
+               end
+            end
             playerScore[name] = playerScore[name] + 1
             if playerScore[name] > playerScoreRecord[name] then
                playerScoreRecord[name] = playerScoreRecord[name] + 1
                tfm.exec.setPlayerScore(name, playerScore[name])
+            end
+            if playerDeathTimer[name] > 0 then
+               playerDeathTimer[name] = playerDeathTimer[name] - 0.5
+            elseif playerDeathTimer[name] == 0 then
+               tfm.exec.killPlayer(name)
             end
          end
       end
@@ -142,25 +140,30 @@ function eventLoop(a, b)
       end
       ui.addTextArea(4, "", nil, 200, 25, 400, 10, 0x808080, 0, 1, false)
       ui.addTextArea(5, "", nil, 200, 25, difficultyBarWidth, 10, 0x1AA0E4, 0, 1, false)
-      ui.addTextArea(6, "<font size='16' color='#FFFFFF'>Difficulty:</font>  <font size='16' color='#24D02A'>1</font><font color='#FFFFFF'>                    <font size='16' color='#FEFF00'>21</font>                    <font size='16' color='#FFA100'>41</font>                    <font size='16' color='#F20D0D'>61</font>               <font size='16' color='#731BE0'>+81</font>", nil, 110, 20, 500, 50, 0x000000, 0, 1, false)
+      ui.addTextArea(6, "<font size='16' color='#FFFFFF'>Difficulty:</font>", nil, 110, 20, 85, 25, 0x000000, 0, 1, false)
+      ui.addTextArea(7, "<font size='16' color='#24D02A'>1</font>", nil, 200, 20, 15, 20, 0x000000, 0, 1, false)
+      ui.addTextArea(8, "<font size='16' color='#FEFF00'>21</font>", nil, 290, 20, 25, 20, 0x000000, 0, 1, false)
+      ui.addTextArea(9, "<font size='16' color='#FFA100'>41</font>", nil, 385, 20, 25, 20, 0x000000, 0, 1, false)
+      ui.addTextArea(10, "<font size='16' color='#F20D0D'>61</font>", nil, 480, 20, 25, 20, 0x000000, 0, 1, false)
+      ui.addTextArea(11, "<font size='16' color='#731BE0'>+81</font>", nil, 565, 20, 40, 20, 0x000000, 0, 1, false)
       for name in next, tfm.get.room.playerList do
          if playerAlive[name] == true then
-            if playerScore[name] > highestPlayerScore then
+            if playerScore[name] >= highestPlayerScore then
                highestPlayerScore = highestPlayerScore + 1 / playerAliveCount
                highestPlayerScoreName = name
-               ui.addTextArea(7, "<p align='center'><font size='16' color='#FFFFFF'>Highest score " .. math.floor(highestPlayerScore) .. " record by " .. highestPlayerScoreName .. "</font></p>", nil, 0, 40, 800, 40, 0x000000, 0, 1, false)
+               ui.addTextArea(12, "<p align='center'><font size='16' color='#FFFFFF'>Highest score " .. math.floor(highestPlayerScore) .. " record by " .. highestPlayerScoreName .. "</font></p>", nil, 0, 40, 800, 40, 0x000000, 0, 1, false)
             end
          end
       end
       playerScoreTimer = 1
    end 
-   -- Add new random barrier every 2 seconds --
+   -- Add new random barrier every 1 seconds --
    barrierSpawnTimer = barrierSpawnTimer - 0.5
    if barrierSpawnTimer == 0 then
       barrierSpawnCount = barrierSpawnCount + 1
       randomBarrierHeight = {40, 80, 120, 160, 200, 240}
       randomBarrierHeight = randomBarrierHeight[math.random(#randomBarrierHeight)]
-      -- Barrier Level --
+      -- Barrier level --
       if barrierSpawnCount > 20 and barrierSpawnCount <= 40 then
          barrierLevel, barrierColor, barrierYPosition = 290, "0xFEFF00", 235
       elseif barrierSpawnCount > 40 and barrierSpawnCount <= 60 then
