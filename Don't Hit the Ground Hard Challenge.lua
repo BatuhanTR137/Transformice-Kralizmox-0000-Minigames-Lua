@@ -1,6 +1,6 @@
 --[[ Don't Hit the Ground Hard Challenge minigame developed by Kralizmox#0000 ]]--
 --[[ Made in 22.06.2025 ]]--
---[[ Last updated in 05.09.2025 ]]--
+--[[ Last updated in 06.09.2025 ]]--
 
 -- Admins and funcorps commands
 -- !ban [name] [banReasonText] -> Bans the player from the room for using hackers or x bug
@@ -28,9 +28,9 @@ for i = 1, 30 do
     cloudPositionsX[i] = math.random(-500, 800)
 end
 
-for i = 65, 425 do
-    asteroidPositionsX[i] = math.random(-400, 1100)
-end
+--for i = 65, 425 do
+    --asteroidPositionsX[i] = math.random(-400, 1100)
+--end
 
 local highestFlyPower, highestFlyPowerName = 100, "None"
 local isPlayerWon, winnerName = false, "None"
@@ -104,7 +104,7 @@ function eventNewPlayer(name)
         ui.addTextArea(10, "<p align='center'><font size='20' color='#CB546B'>You are banned!\nReason: " .. reasonText .. "</font></p>", name, 0, 180, 800, 60, 0x000001, 0, 1, true)
     end
     tfm.exec.setGameTime(9999999)
-    tfm.exec.chatMessage("<font color='#2ECF73'>Welcome to Don\'t Hit the Ground Hard Challenge minigame. The goal is do not fall hard from height and reach the cheese planet!</font>\n<font color='#EDCC8D'>Every success jumps, you will gain +20 fly power and +0.02 \"aie\" sensibility.</font>\n<font color='#BABD2F'>Every time you win, you will gain +0.2 mouse size!</font>\n<font color='#FF8547'>This minigame was made by: Kralizmox#0000.</font>\n<font size='14' color='#CB546B'>• Warning: Dont use any hacks and x bug. You will get room banned!</font>", name)
+    tfm.exec.chatMessage("<font color='#2ECF73'>Welcome to Don\'t Hit the Ground Hard Challenge minigame. The goal is do not fall hard from height and reach the cheese planet!</font>\n<font color='#EDCC8D'>Every success jumps, you will gain +20 fly power and +0.02 \"aie\" sensibility.</font>\n<font color='#BABD2F'>Every time you win, you will gain +0.2 mouse size!</font>\n<font color='#FF8547'>This minigame was made by: Kralizmox#0000.</font>\n<font size='14' color='#CB546B'>• Warning: Don\'t use any hacks and x bug. You will get permanently banned from the room!</font>", name)
     tfm.exec.setAieMode(true, players[name].sensibility, name)
     tfm.exec.setPlayerScore(name, math.abs(players[name].flyPower))
     tfm.exec.addPhysicObject(1, 400, 60460, {type = 14, width = 3000, height = 1000, friction = 0.3, restitution = 0.2, contactListener = true})
@@ -150,7 +150,7 @@ function eventNewPlayer(name)
     system.disableChatCommandDisplay(nil, true)
     ui.addTextArea(1, "<p align='right'><font size='16' color='#FFFFFF'>Fly Power: " .. math.abs(players[name].flyPower) .. " (Max 2000)\n\"Aie\" Sensibility: " .. players[name].sensibility .. " (Max 2)\nSuccess Jumps: " .. players[name].successJumps .. "\nFailed Jumps: " .. players[name].failedJumps .. "\nPlayer Size: " .. players[name].playerSize .. " (Max 5)\n<font color='#FFFF00'>Total Wins: " .. players[name].totalWins .. "</font></font></p>", name, 535, 280, 260, 120, 0x000000, 0, 1, true)
     ui.addTextArea(2, "<p align='center'><font size='20' color='#FFFFFF'>Press Spacebar to Fly!</font></p>", name, 275, 365, 250, 30, 0x000000, 0, 1, true)
-    ui.addTextArea(3, "<p align='center'><font size='20' color='#FFFFFF'>Highest Fly Power " .. math.abs(highestFlyPower) .. " by " .. highestFlyPowerName .. "\n<font color='#FFFF00'>First Winner: " .. winnerName .. " (Reward: 200cc)</font></font></p>", nil, 0, 25, 800, 60, 0x000000, 0, 1, true)
+    ui.addTextArea(3, "<p align='center'><font size='20' color='#FFFFFF'>Highest Fly Power " .. math.abs(highestFlyPower) .. " by " .. highestFlyPowerName .. "\n<font color='#FFFF00'>First Winner: " .. winnerName .. "</font></font></p>", nil, 0, 25, 800, 60, 0x000000, 0, 1, true)
     ui.addTextArea(4, "<p align='left'><font size='14' color='#FFFFFF'><a href='event:help'>Help</a></p>", nil, 5, 375, 35, 25, 0x000001, 0, 1, true)
     --ui.addTextArea(4, "<p align='left'><font size='14' color='#FFFFFF'><a href='event:help'>Help</a> | <a href='event:changelog'>Changelog</a></font></p>", nil, 5, 375, 125, 25, 0x000001, 0, 1, true)
     ui.addTextArea(11, "", name, -1500, -3160, 3000, 3000, 0x000001, 0, 1, true)
@@ -166,7 +166,7 @@ end
 function eventChatCommand(name, cmd)
     -- Player commands
     if cmd == "help" then
-        ui.addTextArea(5, "<p align='center'><font size='20' color='#FFFFFF'>How to Play?</font></p>\n<font size='14' color='#2ECF73'>• Welcome to Don't Hit the Ground Hard Challenge minigame. The goal is do not fall hard from height and reach the cheese planet!</font>\n<font size='14' color='#EDCC8D'>• Every success jumps, you will gain +20 fly power and +0.02 \"aie\" sensibility.</font>\n<font size='14' color='#BABD2F'>• Every time you win, you will gain +0.2 mouse size!</font>\n<font size='14' color='#CB546B'>• Warning: Dont use any hacks and x bug. You will get banned from the room!</font>", name, 200, 115, 400, 180, 0x5A3C19, 0, 1, true)
+        ui.addTextArea(5, "<p align='center'><font size='20' color='#FFFFFF'>How to Play?</font></p>\n<font size='14' color='#2ECF73'>• Welcome to Don't Hit the Ground Hard Challenge minigame. The goal is do not fall hard from height and reach the cheese planet!</font>\n<font size='14' color='#EDCC8D'>• Every success jumps, you will gain +20 fly power and +0.02 \"aie\" sensibility.</font>\n<font size='14' color='#BABD2F'>• Every time you win, you will gain +0.2 mouse size!</font>\n<font size='14' color='#CB546B'>• Warning: Don\'t use any hacks and x bug. You will get permanently banned from the room!</font>", name, 200, 115, 400, 180, 0x5A3C19, 0, 1, true)
         ui.addTextArea(6, "<font size='20' color='#FF0000'><a href='event:closeHelpButton'>X</a></font>", name, 580, 115, 25, 25, 0x000000, 0, 1, true)
     end
     -- Admin commands
@@ -181,7 +181,7 @@ function eventChatCommand(name, cmd)
                 ui.addTextArea(7, "", name, -400, -150, 1600, 900, 0x000001, 0, 1, true)
                 ui.addTextArea(1, "<p align='right'><font size='16' color='#FFFFFF'>Fly Power: " .. math.abs(players[name].flyPower) .. " (Max 2000)\n\"Aie\" Sensibility: " .. players[name].sensibility .. " (Max 2)\nSuccess Jumps: " .. players[name].successJumps .. "\nFailed Jumps: " .. players[name].failedJumps .. "\nPlayer Size: " .. players[name].playerSize .. " (Max 5)\n<font color='#FFFF00'>Total Wins: " .. players[name].totalWins .. "</font></font></p>", name, 535, 280, 260, 120, 0x000000, 0, 1, true)
                 ui.addTextArea(2, "<p align='center'><font size='20' color='#FFFFFF'>Press Spacebar to Fly!</font></p>", name, 275, 365, 250, 30, 0x000000, 0, 1, true)
-                ui.addTextArea(3, "<p align='center'><font size='20' color='#FFFFFF'>Highest Fly Power " .. math.abs(highestFlyPower) .. " by " .. highestFlyPowerName .. "\n<font color='#FFFF00'>First Winner: " .. winnerName .. " (Reward: 200cc)</font></font></p>", nil, 0, 25, 800, 60, 0x000000, 0, 1, true)
+                ui.addTextArea(3, "<p align='center'><font size='20' color='#FFFFFF'>Highest Fly Power " .. math.abs(highestFlyPower) .. " by " .. highestFlyPowerName .. "\n<font color='#FFFF00'>First Winner: " .. winnerName .. "</font></font></p>", nil, 0, 25, 800, 60, 0x000000, 0, 1, true)
                 ui.addTextArea(4, "<p align='left'><font size='14' color='#FFFFFF'><a href='event:help'>Help</a></p>", nil, 5, 375, 35, 25, 0x000001, 0, 1, true)
                 ui.addTextArea(10, "<p align='center'><font size='20' color='#CB546B'>You are banned from the room!\nReason: " .. reasonText .. "</font></p>", name, 0, 180, 800, 60, 0x000001, 0, 1, true)
             end
@@ -189,6 +189,7 @@ function eventChatCommand(name, cmd)
         if cmd == "unban " .. name then
             players[name].isBanned = false
             tfm.exec.respawnPlayer(name)
+            tfm.exec.chatMessage("<font color='#6C77C1'>" .. name .. " has been unbanned.</font>", name)
             ui.removeTextArea(7, name)
             ui.removeTextArea(10, name)
         end
@@ -237,7 +238,7 @@ function eventTextAreaCallback(id, name, event)
     if event == "help" then
         ui.removeTextArea(8, name)
         ui.removeTextArea(9, name)
-        ui.addTextArea(5, "<p align='center'><font size='20' color='#FFFFFF'>How to Play?</font></p>\n<font size='14' color='#2ECF73'>• Welcome to Don't Hit the Ground Hard Challenge minigame. The goal is do not fall hard from height and reach the cheese planet!</font>\n<font size='14' color='#EDCC8D'>• Every success jumps, you will gain +20 fly power and +0.02 \"aie\" sensibility.</font>\n<font size='14' color='#BABD2F'>• Every time you win, you will gain +0.2 mouse size!</font>\n<font size='14' color='#CB546B'>• Warning: Dont use any hacks and x bug. You will get banned from the room!</font>", name, 200, 115, 400, 180, 0x5A3C19, 0, 1, true)
+        ui.addTextArea(5, "<p align='center'><font size='20' color='#FFFFFF'>How to Play?</font></p>\n<font size='14' color='#2ECF73'>• Welcome to Don't Hit the Ground Hard Challenge minigame. The goal is do not fall hard from height and reach the cheese planet!</font>\n<font size='14' color='#EDCC8D'>• Every success jumps, you will gain +20 fly power and +0.02 \"aie\" sensibility.</font>\n<font size='14' color='#BABD2F'>• Every time you win, you will gain +0.2 mouse size!</font>\n<font size='14' color='#CB546B'>• Warning: Don\'t use any hacks and x bug. You will get permanently banned from the room!</font>", name, 200, 115, 400, 180, 0x5A3C19, 0, 1, true)
         ui.addTextArea(6, "<font size='20' color='#FF0000'><a href='event:closeHelpButton'>X</a></font>", name, 580, 115, 25, 25, 0x000000, 0, 1, true)
     end
     if event == "closeHelpButton" then
@@ -296,7 +297,7 @@ function eventKeyboard(name, key, down, x, y)
         end
     end
     if key == 72 then
-        ui.addTextArea(5, "<p align='center'><font size='20' color='#FFFFFF'>How to Play?</font></p>\n<font size='14' color='#2ECF73'>• Welcome to Don't Hit the Ground Hard Challenge minigame. The goal is do not fall hard from height and reach the cheese planet!</font>\n<font size='14' color='#EDCC8D'>• Every success jumps, you will gain +20 fly power and +0.02 \"aie\" sensibility.</font>\n<font size='14' color='#BABD2F'>• Every time you win, you will gain +0.2 mouse size!</font>\n<font size='14' color='#CB546B'>• Warning: Dont use any hacks and x bug. You will get banned from the room!</font>", name, 200, 115, 400, 180, 0x5A3C19, 0, 1, true)
+        ui.addTextArea(5, "<p align='center'><font size='20' color='#FFFFFF'>How to Play?</font></p>\n<font size='14' color='#2ECF73'>• Welcome to Don't Hit the Ground Hard Challenge minigame. The goal is do not fall hard from height and reach the cheese planet!</font>\n<font size='14' color='#EDCC8D'>• Every success jumps, you will gain +20 fly power and +0.02 \"aie\" sensibility.</font>\n<font size='14' color='#BABD2F'>• Every time you win, you will gain +0.2 mouse size!</font>\n<font size='14' color='#CB546B'>• Warning: Don\'t use any hacks and x bug. You will get permanently banned from the room!</font>", name, 200, 115, 400, 180, 0x5A3C19, 0, 1, true)
         ui.addTextArea(6, "<font size='20' color='#FF0000'><a href='event:closeHelpButton'>X</a></font>", name, 580, 115, 25, 25, 0x000000, 0, 1, true)
     end
 end
@@ -311,7 +312,7 @@ function eventPlayerWon(name)
     end
     isPlayerWon = true
     system.bindKeyboard(name, 32, true, true)
-    ui.addTextArea(3, "<p align='center'><font size='20' color='#FFFFFF'>Highest Fly Power " .. math.abs(highestFlyPower) .. " by " .. highestFlyPowerName .. "\n<font color='#FFFF00'>First Winner: " .. winnerName .. " (Reward: 200cc)</font></font></p>", nil, 0, 25, 800, 60, 0x000000, 0, 1, true)
+    ui.addTextArea(3, "<p align='center'><font size='20' color='#FFFFFF'>Highest Fly Power " .. math.abs(highestFlyPower) .. " by " .. highestFlyPowerName .. "\n<font color='#FFFF00'>First Winner: " .. winnerName .. "</font></font></p>", nil, 0, 25, 800, 60, 0x000000, 0, 1, true)
     players[name].flyTimer = 1
     players[name].canFly = false
     players[name].isWon = true
@@ -363,7 +364,7 @@ function eventLoop()
                         if math.abs(players[name].flyPower) > highestFlyPower then
                             highestFlyPower = highestFlyPower + 20
                             highestFlyPowerName = name
-                            ui.addTextArea(3, "<p align='center'><font size='20' color='#FFFFFF'>Highest Fly Power " .. math.abs(highestFlyPower) .. " by " .. highestFlyPowerName .. "\n<font color='#FFFF00'>First Winner: " .. winnerName .. " (Reward: 200cc)</font></font></p>", nil, 0, 25, 800, 60, 0x000000, 0, 1, true)
+                            ui.addTextArea(3, "<p align='center'><font size='20' color='#FFFFFF'>Highest Fly Power " .. math.abs(highestFlyPower) .. " by " .. highestFlyPowerName .. "\n<font color='#FFFF00'>First Winner: " .. winnerName .. "</font></font></p>", nil, 0, 25, 800, 60, 0x000000, 0, 1, true)
                         end
                     end
                 end
