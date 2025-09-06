@@ -1,6 +1,6 @@
 --[[ Don't Hit the Ground Hard Challenge minigame developed by Kralizmox#0000 ]]--
 --[[ Made in 22.06.2025 ]]--
---[[ Last updated in 06.09.2025 ]]--
+--[[ Last updated in 07.09.2025 ]]--
 
 -- Admins and funcorps commands
 -- !ban [name] [banReasonText] -> Bans the player from the room for using hackers or x bug
@@ -38,7 +38,7 @@ local waitNewGameTimer, newGameIsStarted = 3.5, false
 local args, name, reasonText
 
 local defaultPlayerData = {
-    flyPower = -100,
+    flyPower = -2000,
     sensibility = 1,
     touchedGround = true,
     freezeTimer = 0.5,
@@ -57,7 +57,7 @@ local defaultPlayerData = {
 }
 
 local players = {}
-local map = '<C><P H="60000" DS="y;59945" MEDATA=";;;;-0;0:::1-"/><Z><S><S T="6" X="400" Y="60460" L="3000" H="1000" P="0,0,0.3,0.2,0,0,0,0" c="4"/></S><D><P X="1200" Y="59970" T="139" P="0,0"/><P X="1100" Y="59970" T="139" P="0,0"/><P X="1000" Y="59970" T="139" P="0,0"/><P X="900" Y="59970" T="139" P="0,0"/><P X="799" Y="59970" T="139" P="0,0"/><P X="700" Y="59970" T="139" P="0,0"/><P X="600" Y="59970" T="139" P="0,0"/><P X="500" Y="59970" T="139" P="0,0"/><P X="400" Y="59970" T="139" P="0,0"/><P X="300" Y="59970" T="139" P="0,0"/><P X="200" Y="59970" T="139" P="0,0"/><P X="100" Y="59970" T="139" P="0,0"/><P X="0" Y="59970" T="139" P="0,0"/><P X="-100" Y="59970" T="139" P="0,0"/><P X="-200" Y="59970" T="139" P="0,0"/><P X="-300" Y="59970" T="139" P="0,0"/><P X="-400" Y="59970" T="139" P="0,0"/><F X="20" Y="20"/><F X="60" Y="20"/><F X="-380" Y="20"/><F X="100" Y="20"/><F X="-340" Y="20"/><F X="140" Y="20"/><F X="-300" Y="20"/><F X="180" Y="20"/><F X="-260" Y="20"/><F X="220" Y="20"/><F X="-220" Y="20"/><F X="260" Y="20"/><F X="-180" Y="20"/><F X="300" Y="20"/><F X="-140" Y="20"/><F X="340" Y="20"/><F X="-100" Y="20"/><F X="380" Y="20"/><F X="-60" Y="20"/><F X="420" Y="20"/><F X="-20" Y="20"/><F X="460" Y="20"/><F X="500" Y="20"/><F X="820" Y="20"/><F X="540" Y="20"/><F X="860" Y="20"/><F X="580" Y="20"/><F X="900" Y="20"/><F X="620" Y="20"/><F X="940" Y="20"/><F X="660" Y="20"/><F X="980" Y="20"/><F X="700" Y="20"/><F X="1020" Y="20"/><F X="740" Y="20"/><F X="1060" Y="20"/><F X="1140" Y="20"/><F X="780" Y="20"/><F X="1100" Y="20"/><F X="1180" Y="20"/></D><O/><L/></Z></C>'
+local map = '<C><P H="60000" DS="y;59945" MEDATA="0,1;;;;-0;0:::1-"/><Z><S><S T="6" X="400" Y="60460" L="3000" H="1000" P="0,0,0.3,0.2,0,0,0,0" c="4"/></S><D><P X="1200" Y="59970" T="139" P="0,0"/><P X="1100" Y="59970" T="139" P="0,0"/><P X="1000" Y="59970" T="139" P="0,0"/><P X="900" Y="59970" T="139" P="0,0"/><P X="799" Y="59970" T="139" P="0,0"/><P X="700" Y="59970" T="139" P="0,0"/><P X="600" Y="59970" T="139" P="0,0"/><P X="500" Y="59970" T="139" P="0,0"/><P X="400" Y="59970" T="139" P="0,0"/><P X="300" Y="59970" T="139" P="0,0"/><P X="200" Y="59970" T="139" P="0,0"/><P X="100" Y="59970" T="139" P="0,0"/><P X="0" Y="59970" T="139" P="0,0"/><P X="-100" Y="59970" T="139" P="0,0"/><P X="-200" Y="59970" T="139" P="0,0"/><P X="-300" Y="59970" T="139" P="0,0"/><P X="-400" Y="59970" T="139" P="0,0"/><F X="20" Y="20"/><F X="60" Y="20"/><F X="-380" Y="20"/><F X="100" Y="20"/><F X="-340" Y="20"/><F X="140" Y="20"/><F X="-300" Y="20"/><F X="180" Y="20"/><F X="-260" Y="20"/><F X="220" Y="20"/><F X="-220" Y="20"/><F X="260" Y="20"/><F X="-180" Y="20"/><F X="300" Y="20"/><F X="-140" Y="20"/><F X="340" Y="20"/><F X="-100" Y="20"/><F X="380" Y="20"/><F X="-60" Y="20"/><F X="420" Y="20"/><F X="-20" Y="20"/><F X="460" Y="20"/><F X="500" Y="20"/><F X="820" Y="20"/><F X="540" Y="20"/><F X="860" Y="20"/><F X="580" Y="20"/><F X="900" Y="20"/><F X="620" Y="20"/><F X="940" Y="20"/><F X="660" Y="20"/><F X="980" Y="20"/><F X="700" Y="20"/><F X="1020" Y="20"/><F X="740" Y="20"/><F X="1060" Y="20"/><F X="1140" Y="20"/><F X="780" Y="20"/><F X="1100" Y="20"/><F X="1180" Y="20"/></D><O/><L/></Z></C>'
 
 tfm.exec.newGame(map)
 tfm.exec.setRoomMaxPlayers(100)
@@ -177,7 +177,7 @@ function eventChatCommand(name, cmd)
             if name and reasonText then
                 players[name].isBanned = true
                 tfm.exec.killPlayer(name)
-                tfm.exec.chatMessage("<font color='#CB546B'>" .. name .. " permanently banned from the room. Reason: " .. reasonText .. "</font>", name)
+                tfm.exec.chatMessage("<font color='#CB546B'>" .. name .. " permanently banned from the room. Reason: " .. reasonText .. "</font>", nil)
                 ui.addTextArea(7, "", name, -400, -150, 1600, 900, 0x000001, 0, 1, true)
                 ui.addTextArea(1, "<p align='right'><font size='16' color='#FFFFFF'>Fly Power: " .. math.abs(players[name].flyPower) .. " (Max 2000)\n\"Aie\" Sensibility: " .. players[name].sensibility .. " (Max 2)\nSuccess Jumps: " .. players[name].successJumps .. "\nFailed Jumps: " .. players[name].failedJumps .. "\nPlayer Size: " .. players[name].playerSize .. " (Max 5)\n<font color='#FFFF00'>Total Wins: " .. players[name].totalWins .. "</font></font></p>", name, 535, 280, 260, 120, 0x000000, 0, 1, true)
                 ui.addTextArea(2, "<p align='center'><font size='20' color='#FFFFFF'>Press Spacebar to Fly!</font></p>", name, 275, 365, 250, 30, 0x000000, 0, 1, true)
@@ -186,12 +186,14 @@ function eventChatCommand(name, cmd)
                 ui.addTextArea(10, "<p align='center'><font size='20' color='#CB546B'>You are permanently banned from the room!\nReason: " .. reasonText .. "</font></p>", name, 0, 180, 800, 60, 0x000001, 0, 1, true)
             end
         end
-        if cmd == "unban " .. name then
-            players[name].isBanned = false
-            tfm.exec.respawnPlayer(name)
-            tfm.exec.chatMessage("<font color='#6C77C1'>" .. name .. " has been unbanned.</font>", name)
-            ui.removeTextArea(7, name)
-            ui.removeTextArea(10, name)
+        for name in next, tfm.get.room.playerList do
+            if cmd == "unban " .. name then
+                players[name].isBanned = false
+                tfm.exec.respawnPlayer(name)
+                tfm.exec.chatMessage("<font color='#6C77C1'>" .. name .. " has been unbanned.</font>", nil)
+                ui.removeTextArea(7, name)
+                ui.removeTextArea(10, name)
+            end
         end
         if cmd:sub(1, 10) == "playersize" then
             local playerSizeValue = tonumber(cmd:sub(12))
