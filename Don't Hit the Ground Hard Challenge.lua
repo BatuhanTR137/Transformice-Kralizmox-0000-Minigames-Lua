@@ -104,7 +104,7 @@ function eventNewPlayer(name)
         ui.addTextArea(10, "<p align='center'><font size='20' color='#CB546B'>You are banned!\nReason: " .. reasonText .. "</font></p>", name, 0, 180, 800, 60, 0x000001, 0, 1, true)
     end
     tfm.exec.setGameTime(9999999)
-    tfm.exec.chatMessage("<font color='#2ECF73'>Welcome to Don\'t Hit the Ground Hard Challenge minigame. The goal is do not fall hard from height and reach the cheese planet!</font>\n<font color='#EDCC8D'>Every success jumps, you will gain +20 fly power and +0.02 \"aie\" sensibility.</font>\n<font color='#BABD2F'>Every time you win, you will gain +0.2 mouse size!</font>\n<font color='#FF8547'>This minigame was made by: Kralizmox#0000.</font>\n<font size='14' color='#CB546B'>• Warning: Don\'t use any hacks and x bug. You will get permanently banned from the room!</font>", name)
+    tfm.exec.chatMessage("<font color='#2ECF73'>Welcome to Don\'t Hit the Ground Hard Challenge minigame. The goal is do not fall hard from height and reach the cheese planet!</font>\n<font color='#EDCC8D'>Every success jumps, you will gain +20 fly power and +0.02 \"aie\" sensibility.</font>\n<font color='#BABD2F'>Every time you win, you will gain +0.2 mouse size!</font>\n<font color='#FF8547'>This minigame was made by: Kralizmox#0000.</font>\n<font color='#CB546B'>• Warning: Don\'t use any hacks and x bug. You will get permanently banned from the room!</font>", name)
     tfm.exec.setAieMode(true, players[name].sensibility, name)
     tfm.exec.setPlayerScore(name, math.abs(players[name].flyPower))
     tfm.exec.addPhysicObject(1, 400, 60460, {type = 14, width = 3000, height = 1000, friction = 0.3, restitution = 0.2, contactListener = true})
