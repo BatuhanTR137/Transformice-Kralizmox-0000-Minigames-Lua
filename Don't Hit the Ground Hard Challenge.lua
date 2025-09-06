@@ -177,13 +177,13 @@ function eventChatCommand(name, cmd)
             if name and reasonText then
                 players[name].isBanned = true
                 tfm.exec.killPlayer(name)
-                tfm.exec.chatMessage("<font color='#CB546B'>" .. name .. " banned from the room. Reason: " .. reasonText .. "</font>", name)
+                tfm.exec.chatMessage("<font color='#CB546B'>" .. name .. " permanently banned from the room. Reason: " .. reasonText .. "</font>", name)
                 ui.addTextArea(7, "", name, -400, -150, 1600, 900, 0x000001, 0, 1, true)
                 ui.addTextArea(1, "<p align='right'><font size='16' color='#FFFFFF'>Fly Power: " .. math.abs(players[name].flyPower) .. " (Max 2000)\n\"Aie\" Sensibility: " .. players[name].sensibility .. " (Max 2)\nSuccess Jumps: " .. players[name].successJumps .. "\nFailed Jumps: " .. players[name].failedJumps .. "\nPlayer Size: " .. players[name].playerSize .. " (Max 5)\n<font color='#FFFF00'>Total Wins: " .. players[name].totalWins .. "</font></font></p>", name, 535, 280, 260, 120, 0x000000, 0, 1, true)
                 ui.addTextArea(2, "<p align='center'><font size='20' color='#FFFFFF'>Press Spacebar to Fly!</font></p>", name, 275, 365, 250, 30, 0x000000, 0, 1, true)
                 ui.addTextArea(3, "<p align='center'><font size='20' color='#FFFFFF'>Highest Fly Power " .. math.abs(highestFlyPower) .. " by " .. highestFlyPowerName .. "\n<font color='#FFFF00'>First Winner: " .. winnerName .. "</font></font></p>", nil, 0, 25, 800, 60, 0x000000, 0, 1, true)
                 ui.addTextArea(4, "<p align='left'><font size='14' color='#FFFFFF'><a href='event:help'>Help</a></p>", nil, 5, 375, 35, 25, 0x000001, 0, 1, true)
-                ui.addTextArea(10, "<p align='center'><font size='20' color='#CB546B'>You are banned from the room!\nReason: " .. reasonText .. "</font></p>", name, 0, 180, 800, 60, 0x000001, 0, 1, true)
+                ui.addTextArea(10, "<p align='center'><font size='20' color='#CB546B'>You are permanently banned from the room!\nReason: " .. reasonText .. "</font></p>", name, 0, 180, 800, 60, 0x000001, 0, 1, true)
             end
         end
         if cmd == "unban " .. name then
