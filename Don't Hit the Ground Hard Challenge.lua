@@ -38,7 +38,7 @@ local waitNewGameTimer, newGameIsStarted = 3.5, false
 local args, name, reasonText
 
 local defaultPlayerData = {
-    flyPower = -2000,
+    flyPower = -100,
     sensibility = 1,
     touchedGround = true,
     freezeTimer = 0.5,
