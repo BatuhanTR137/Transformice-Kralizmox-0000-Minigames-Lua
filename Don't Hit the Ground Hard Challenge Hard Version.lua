@@ -1,6 +1,6 @@
 --[[ Don't Hit the Ground Hard Challenge minigame developed by Kralizmox#0000 ]]--
 --[[ Made in 22.06.2025 ]]--
---[[ Last updated in 07.09.2025 ]]--
+--[[ Last updated in 12.09.2025 ]]--
 
 -- Admins and funcorps commands
 -- !ban [name] [banReasonText] -> Bans the player from the room for using hackers or x bug
